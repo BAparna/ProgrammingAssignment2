@@ -1,14 +1,18 @@
-## this function will create a matrix
-## functions do
+## This function will create a special cachable matrix
 
-## Used to create a special cachable matrix Write a short comment describing this function
-
+##create a matrix
 makeCacheMatrix <- function(x = matrix()) {
-
-  x<-NULL
+  m<-NULL
+  set<- function(z){
+    x<<-matrix(data,row, col)
+    m<<-NULL
+  }
   
-  x<<-matrix(data,nrow,ncol)
-  x
+  get<-function() x
+  setinverse<-function(inverse)m<<-inverse
+  getinverse<-function() m
+
+  list(set=set,get = get, setinverse= setinverse, getinverse=getinverse)
   
 }
 
@@ -17,12 +21,16 @@ makeCacheMatrix <- function(x = matrix()) {
 
 cacheSolve <- function(x, ...) {
         ## Return a matrix that is the inverse of 'x'
-  m<-x
+  x<-x$getinverse()
   if(!is.null(m))
   {
-    message( "Getting cached matrix")
+    message( "Getting cached matrix") ##checking if cached version exists
     return(m)
     
   }
-  m<-x()
+  data<-x$get()
+  m<-solve(m)%*% m ##using solve() function to create inverse
+  m
 }
+
+
